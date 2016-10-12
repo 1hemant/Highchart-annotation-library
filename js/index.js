@@ -5,6 +5,12 @@ $(function () {
             renderTo: 'container',
             defaultSeriesType: 'line'
         },
+        credits: {
+            enabled: false
+        },
+        annotationsOptions: {
+            enabledButtons: true
+        },
         title: {
             text: 'Monthly Average Temperature',
             x: -20 //center
@@ -12,6 +18,13 @@ $(function () {
         subtitle: {
             text: 'Source: WorldClimate.com',
             x: -20
+        },
+        exporting: {
+            //enabled: false,
+            //error:  export_error(),
+            filename: 'NetlinkBI',
+            fallbackToExportServer: false,
+            libURL: './canvg-master/'
         },
         annotations: [{
             title: {
@@ -113,8 +126,26 @@ $(function () {
     };
     var chart = new Highcharts.Chart(options);
     $("#btnExport").on("click",function(e){
-        console.log("button clicked");
+        console.log("Export button clicked");
         //chart.print();//send chart to print.
         chart.exportChart();//exports chart as PNG
     });
+    $("#btnPrint").on("click",function(e){
+        console.log("Print button clicked");
+        //chart.print();//send chart to print.
+        chart.print();//exports chart as PNG
+    });
+    $('#button').click(function () {
+        var chart = $('#container').highcharts(),
+            each = Highcharts.each;
+
+        each(chart.annotations.allItems, function(item, i) {
+          if(item.selectionMarker) {
+                item.destroy();
+            }
+        });
+    });
+    function export_error(){
+      window.alert("Not able to perform.");
+    }
 });
